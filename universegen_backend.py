@@ -2,12 +2,11 @@
 
 import object_data_templates
 import sqlite_init
-
+import maths_helper
 import sqlite3
 from sqlite3 import Error
 
 from numpy import random
-from math import cos, sin
 
 #some constants
 
@@ -23,62 +22,49 @@ noOfStars = 250
 conn = None
 
 
-#classes
-
-
-class System:
-
-    def __init__(self, location, name, typeIndex):
-        self.location = location
-        self.name = name
-        self.type = object_data_templates.starData[typeIndex]['Type']
-        self.temp = round(float(object_data_templates.starData[typeIndex]['Temp'])*random.uniform(0.5,1.5))
-        self.mass = round(float(object_data_templates.starData[typeIndex]['Mass'])*random.uniform(0.5,1.5), 3)
-        self.starRadius = round(float(object_data_templates.starData[typeIndex]['Radius'])*random.uniform(0.5,1.5), 3)
-        self.luminosity = round(float(object_data_templates.starData[typeIndex]['Luminosity'])*random.uniform(0.5,1.5), 3)
-        self.description = object_data_templates.starData[typeIndex]['Desc']
-    planets = list()
-    
-class Planet:
-
-    def calulatePlanetPosition(self, radius, angle):
-        x = round(radius*cos(angle))
-        y = round(radius*sin(angle))
-        return x,y   
-    
-    def __init__(self, radius, angle, name):
-        self.radius = radius
-        self.angle = angle
-        self.name = name
-        self.location = self.calulatePlanetPosition(radius, angle)
-
 
 def createSystemData(conn):
 
     c = conn.cursor()
 
-    i = 0
-    while i < noOfStars:
+    planetId = 0
 
-        name = object_data_templates.starNames[random.randint(0, len(object_data_templates.starNames))]
+    systemId = 0
+    while systemId < noOfStars:
 
-        s = System((random.randint(0, universeSizeX),random.randint(0, universeSizeY)), name, random.randint(0,len(object_data_templates.starData)))
+        typeIndex = random.randint(0, len(object_data_templates.starData))
     
-        #generate planets
+        locationX = random.randint(0, universeSizeX)
+        locationY = random.randint(0, universeSizeY)
+        name = object_data_templates.starNames[random.randint(0, len(object_data_templates.starNames))]
+        type = object_data_templates.starData[typeIndex]['Type']
+        temp = round(float(object_data_templates.starData[typeIndex]['Temp'])*random.uniform(0.5,1.5))
+        mass = round(float(object_data_templates.starData[typeIndex]['Mass'])*random.uniform(0.5,1.5), 3)
+        starRadius = round(float(object_data_templates.starData[typeIndex]['Radius'])*random.uniform(0.5,1.5), 3)
+        luminosity = round(float(object_data_templates.starData[typeIndex]['Luminosity'])*random.uniform(0.5,1.5), 3)
+        description = object_data_templates.starData[typeIndex]['Desc']
+
+        
         numberOfPlanets = random.randint(0,1000)%maxPlanets
 
-        c.execute(sqlite_init.writeSystems, (i, s.location.index(0), s.location.index(1), s.name, s.type, s.temp, s.mass, s.starRadius, s.luminosity, s.description))
-    
+        c.execute(sqlite_init.writeSystems, (systemId, locationX, locationY, name, type, temp, mass, starRadius, luminosity, description))    
         j = 0
         while j < numberOfPlanets:
+            
             radius = random.randint(0, systemSizeX/2)
-            angle = random.randint(0, 360)        
-            p = Planet(radius, angle, name+ " "+str(i+1))
-            s.planets.append(p)
-            print(p.name + " " + str(p.location))
+            angle = random.randint(0, 360)
+            location = maths_helper.calculateOrbitalCoordinates(radius, angle)
+            locationX = location[0]
+            locationY = location[1]
+            planetName = name + " " + str(j)
+            c.execute(sqlite_init.writePlanets, (planetId, locationX, locationY, planetName, systemId))
+            planetId = planetId+1
             j = j + 1
 
-        i=i+1
+        systemId=systemId+1
+
+        conn.commit()
+        
         
 def createDbConnection(db_file):
     """ create a database connection to a SQLite database """
@@ -109,7 +95,6 @@ def main():
     
     
     createSystemData(conn)
-    i = i+1
     closeDbConnection(conn)    
     universeFile.close()
     
