@@ -48,8 +48,8 @@ def createSystemData(conn):
         numberOfPlanets = random.randint(0,1000)%maxPlanets
 
         c.execute(sqlite_init.writeSystems, (systemId, locationX, locationY, name, type, temp, mass, starRadius, luminosity, description))    
-        j = 0
-        while j < numberOfPlanets:
+        j = 1
+        while j <= numberOfPlanets:
             
             radius = random.randint(0, systemSizeX/2)
             angle = random.randint(0, 360)
