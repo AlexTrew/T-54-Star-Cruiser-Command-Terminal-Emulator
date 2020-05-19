@@ -11,4 +11,7 @@ starData = [{'Type' : "O-Type Blue Giant", 'Temp' : "40000", 'Mass' : "60" ,'Rad
             {'Type' : "K-Type Red Star", 'Temp' : "4350", 'Mass' : "0.8" ,'Radius' : "0.9", 'Luminosity' : '0.4' , 'Desc' : 'Some molecular bands of titanium oxide.'},
             {'Type' : "M-Type Red Dwarf", 'Temp' : "2000", 'Mass' : "0.3" ,'Radius' : "0.4", 'Luminosity' : '0.04' , 'Desc' : 'Some molecular bands of titanium oxide.'}]
 
-starNames = ["Orwell", "Amazon", "Google", "Perseus", "Kruangbin", "Hongwu", "Jianwen", "Yongle", "Hongxi", "Xuande", "Yingzong", "Jingtai", "Chenghua", "Hongzhi", "Zhengde", "Jiajing", "Longqing", "Wanli", "Taiching", "Tianqi", "Chongzhen", "Babbage", "Bass", "Bonney", "Caley", "Cunningham", "Dampier", "Evans", "Grant", "Laperhouse", "Leichhardt" ]
+starNames = ["Orwell", "Amazon", "Google", "Perseus", "Kruangbin", "Hongwu", "Jianwen", "Yongle", "Hongxi", "Xuande", "Yingzong", "Jingtai", "Chenghua", "Hongzhi", "Zhengde",
+             "Jiajing", "Longqing", "Wanli", "Taiching", "Tianqi", "Chongzhen", "Babbage", "Bass", "Bonney", "Caley", "Cunningham", "Dampier", "Evans", "Grant", "Laperhouse", "Leichhardt", "Raskolnikov’s star",
+             "Sofia", "Petrovna's Star", "Luzhin’s Star", "Marmeladov's Star", "Karamazov's Star", "Svetlov's Star", "Smerdyakov's Star", "Zosima's Star", "Verkhovtsev's Star", "Khokhlakov's Star", "Khokhlakov's Star",
+             "Rakitin's Star", "Miusov's Star", "Perkhotin's Star", "Samsonov's Star", "Lizaveta's Star", "Fetyukovich's Star", "Kirrillovich's Star", "Ferapont's Star", "Krasotkin's Star", "Snegiryov's Star", "Vasilievich's Star"]

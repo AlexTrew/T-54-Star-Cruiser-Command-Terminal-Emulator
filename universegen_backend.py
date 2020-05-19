@@ -1,6 +1,10 @@
 # universegen_backend.py
 
 import object_data_templates
+import sqlite_init
+
+import sqlite3
+from sqlite3 import Error
 
 from numpy import random
 from math import cos, sin
@@ -16,6 +20,7 @@ systemSizeY = 1000
 maxPlanets = 15
 noOfStars = 250
 
+conn = None
 
 
 #classes
@@ -50,7 +55,7 @@ class Planet:
         self.location = self.calulatePlanetPosition(radius, angle)
 
 
-def createSystem():
+def createSystemData(conn):
 
 
     name = object_data_templates.starNames[random.randint(0, len(object_data_templates.starNames))]
@@ -72,13 +77,34 @@ def createSystem():
         print(p.name + " " + str(p.location))
         i = i + 1
         
-        
+
+def createDbConnection(db_file):
+    """ create a database connection to a SQLite database """
+    try:
+        print(sqlite3.version)
+        conn = sqlite3.connect(db_file)
+        return conn
+    except Error as e:
+        print(e)
+
+   
+def initDb(conn):
+    c = conn.cursor()
+    c.executescript(sqlite_init.initScript)
+
     
 def main():
+    universeFile = open("universe.T54", "w")
+    conn = createDbConnection("universe.T54")
+
+    initDb(conn)
+    
     i = 0
     while i < noOfStars:
-        createSystem()
-        i = i+1 
+        createSystemData(conn)
+        i = i+1
+    conn.close()
+    universeFile.close()
 
 if __name__ == "__main__":
     main()
