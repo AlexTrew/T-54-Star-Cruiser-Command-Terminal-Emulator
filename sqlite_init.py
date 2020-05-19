@@ -1,6 +1,6 @@
 import sqlite3
 
-initScript = "\
+init = "\
 \
     PRAGMA foreign_keys = ON;\
     \
@@ -11,6 +11,7 @@ initScript = "\
         name TEXT NOT NULL,\
         type TEXT NOT NULL,\
         temp INTEGER,\
+        mass DOUBLE,\
         starRadius INTEGER,\
         luminosity INTEGER,\
         description INTEGER\
@@ -25,4 +26,8 @@ initScript = "\
         FOREIGN KEY(systemId) REFERENCES Systems(id));"
 
     
-
+writeSystems = "\
+\
+    INSERT INTO Systems(id, location_x, location_y, name, type ,temp, mass, starRadius, luminosity, description)\
+    VALUES(?,?,?,?,?,?,?,?,?,?)\
+"
